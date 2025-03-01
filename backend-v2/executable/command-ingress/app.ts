@@ -1,4 +1,4 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express from 'express';
 import env from './utils/env';
 import logger from './middlewares/logger';

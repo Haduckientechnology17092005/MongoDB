@@ -1,4 +1,3 @@
-
 export default class ServerError extends Error {
   statusCode: number;
   options: any;

@@ -3,25 +3,6 @@ import User from '../../../../../internal/model/user';
 import { PostEntity, PostCreationDto, PostService, UpdatePostDto } from '../types';
 
 export class PostServiceImpl implements PostService {
-  async editPost(
-    id: string,
-    editPostDto: UpdatePostDto,
-  ): Promise<PostEntity> {
-    const existPost = await Post.findOne({ _id: id });
-    if (!existPost) {
-      throw new Error('Post does not exist');
-    }
-
-    const updatedPost = await Post.updateOne({ _id: id }, {
-
-    });
-
-    return {
-      // ...
-    }
-
-  }
-
   async getPost(id: string): Promise<PostEntity> {
     const post = await Post.findOne({ _id: id });
 
@@ -90,5 +71,37 @@ export class PostServiceImpl implements PostService {
       summary: insertResult.summary,
       createdAt: Number(insertResult.createdAt),
     }
+  }
+
+  async editPost(id: string, postCreationDto: PostCreationDto): Promise<PostEntity | null> {
+    const codeRegex = /<code>(.*?)<\/code>/g;
+    const withoutCode = postCreationDto.markdown.replace(codeRegex, '');
+    const htmlRegexG = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
+    const summary = withoutCode.replace(htmlRegexG, '').trim();
+
+    const post = await Post.findById(id);
+    if (!post) {
+        throw new Error('Post not found');
+    }
+    post.title = postCreationDto.title;
+    post.markdown = postCreationDto.markdown;
+    post.tags = postCreationDto.tags;
+    post.summary = summary;
+    post.updatedAt = new Date();
+    await post.save();
+    return {
+      id,
+      image: String(post.image),
+      authorID: String(postCreationDto.authorID),
+      markdown: post.markdown,
+      title: post.title,
+      tags: postCreationDto.tags,
+      summary: post.summary,
+      createdAt: Number(post.createdAt),
+    }
+  }
+
+  async deletePost(id: string): Promise<void> {
+    await Post.deleteOne({ _id: id });
   }
 }
