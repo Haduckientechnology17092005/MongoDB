@@ -10,6 +10,9 @@ const setupUserRoute = (controller: UserController) => {
     router.post('/:id/follow', controller.followUser.bind(controller));
     router.post('/:id/unfollow', controller.unfollowUser.bind(controller));
     router.get('/:id/suggestions', controller.suggestUsers.bind(controller));
+    router.get('/:id/getallflowers', controller.getAllFollowers.bind(controller));
+    router.get('/:id/getallfollowings', controller.getAllFollowings.bind(controller));
+    router.get('/:id/getalllist', controller.getAllList.bind(controller));
     return router;
 }
 
