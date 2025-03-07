@@ -12,6 +12,9 @@ interface UserService {
   followUser(id: string, followerId: string): Promise<void>;
   unfollowUser(id: string, followerId: string): Promise<void>;
   suggestUsers(id: string): Promise<UserEntity[]>;
+  getAllFollowers(id: string): Promise<UserEntity[]>;
+  getAllFollowings(id: string): Promise<UserEntity[]>;
+  getAllList(id: string): Promise<UserEntity[]>;
 }
 
 export {

@@ -66,4 +66,28 @@ export class UserController extends BaseController {
       return;
     });
   }
+  async getAllFollowers(req: HttpRequest, res: Response, next: NextFunction): Promise<void> {
+    await this.execWithTryCatchBlock(req, res, next, async (req, res, _next)=>{
+      const {id} = req.params;
+      const users = await this.service.getAllFollowers(id);
+      res.status(200).json(users);
+      return;
+    })
+  }
+  async getAllFollowings(req: HttpRequest, res: Response, next: NextFunction): Promise<void> {
+    await this.execWithTryCatchBlock(req, res, next, async (req, res, _next)=>{
+      const {id} = req.params;
+      const users = await this.service.getAllFollowings(id);
+      res.status(200).json(users);
+      return;
+    })
+  }
+  async getAllList(req: HttpRequest, res: Response, next: NextFunction): Promise<void> {
+    await this.execWithTryCatchBlock(req, res, next, async (req, res, _next)=>{
+      const {id} = req.params;
+      const users = await this.service.getAllList(id);
+      res.status(200).json(users);
+      return;
+    })
+  }
 }
