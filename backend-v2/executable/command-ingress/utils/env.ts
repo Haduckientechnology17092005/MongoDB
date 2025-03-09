@@ -11,6 +11,8 @@ const env = cleanEnv(process.env, {
   GOOGLE_OAUTH_CLIENT_ID: str(),
   GOOGLE_OAUTH_CLIENT_SECRET: str(),
   GOOGLE_OAUTH_REDIRECT_URL: str(),
+  REDIS_URL: str(),
+  REDIS_PORT: port(),
 });
 
 export default env;

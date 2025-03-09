@@ -1,8 +1,16 @@
 import Post from '../../../../../internal/model/post';
 import User from '../../../../../internal/model/user';
 import { PostEntity, PostCreationDto, PostService, UpdatePostDto } from '../types';
-
+import { RedisService } from '../../../shared/service/redis.service';
+import { createClient } from 'redis';
+import env from '../../../utils/env';
+import { DI_TOKENS } from '../../../types/Di'; 
+import { inject } from 'inversify';
 export class PostServiceImpl implements PostService {
+  private redisService: RedisService;
+  constructor(@inject(DI_TOKENS.REDIS_SERVICE) redisService: RedisService) {
+    this.redisService = redisService;
+  }
   async getPost(id: string): Promise<PostEntity> {
     const post = await Post.findOne({ _id: id });
 
@@ -103,5 +111,10 @@ export class PostServiceImpl implements PostService {
 
   async deletePost(id: string): Promise<void> {
     await Post.deleteOne({ _id: id });
+  }
+
+  async getPostsNewFeed(sub: string): Promise<PostEntity[]> {
+    const posts = await this.redisService.getRange(`user: ${sub}:posts`, 0, 10);
+    return posts.map((p: string) => JSON.parse(p));
   }
 }

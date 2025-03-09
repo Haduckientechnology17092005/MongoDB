@@ -14,9 +14,13 @@ const setupPostRoute = (
   router.route('/users/:id')
     .get(controller.fetchPostByUser.bind(controller));
 
+  router.route('/newfeed')
+    .get(controller.getPostsNewFeed.bind(controller));
+    
   router.route('/:id')
     .get(controller.getPost.bind(controller))
-    .put(controller.editPost.bind(controller));
+    .put(controller.editPost.bind(controller))
+    .delete(controller.deletePost.bind(controller));
 
   return router;
 }

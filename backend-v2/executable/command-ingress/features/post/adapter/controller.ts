@@ -78,4 +78,18 @@ export class PostController extends BaseController {
       res.status(200).json(post);
     });
   }
+  async deletePost(req: HttpRequest, res: Response, next: NextFunction): Promise<void> {
+    await this.execWithTryCatchBlock(req, res, next, async (req, res, _next) => {
+      const id = req.params.id;
+      await this.service.deletePost(id);
+      res.status(204).send();
+    });
+  }
+  async getPostsNewFeed(req: HttpRequest, res: Response, next: NextFunction): Promise<void> {
+    await this.execWithTryCatchBlock(req, res, next, async (req, res, _next) => {
+      const sub = req.getSubject();
+      const posts = await this.service.getPostsNewFeed(sub);
+      res.status(200).json(posts);
+    });
+  }
 }

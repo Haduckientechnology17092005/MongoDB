@@ -8,6 +8,7 @@
     "test": "jest",
     "dev:api-example": "nodemon samples/main.ts",
     "dev:command-ingress": "nodemon executable/command-ingress/main.ts",
+    "dev:test": "nodemon executable/cdc-test/main.ts",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix ."
   },
