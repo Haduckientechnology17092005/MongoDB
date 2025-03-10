@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { Pipeline} from './pipeline';
 import { PostSource } from './source/post_source';
 import { LogSink } from './sink/log_sink';
-
+import { createClient } from 'redis';
 config();
 
 async function connectMongoDB() {
@@ -12,9 +12,11 @@ async function connectMongoDB() {
 
 async function main() {
   await connectMongoDB();
-
   const source = new PostSource();
-  const sink = new LogSink();
+  const redisClient = createClient({
+    url: process.env.REDIS_URL,
+  });
+  const sink = new LogSink(redisClient);
 
   const pipline = new Pipeline(source, sink, []);
 
